@@ -66,9 +66,12 @@ export const signup = async (req, res) => {
 
 // LOGIN CONTROLLER
 export const login = async (req, res) => {
+    // DESTRUCTURE REQUEST
     const {email, password} = req.body;
+    // END - DESTRUCTURE REQUEST
 
     try {
+        // FIND USER
         const user = await User.findOne({email});
 
         if (!user) {
@@ -76,14 +79,18 @@ export const login = async (req, res) => {
                 message : "invalid credential"
             });
         }
+        // END - FIND USER
 
+        // VALIDATE PASSWORD
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
         if (!isPasswordCorrect) {
             return res.status(400).json({
                 message : "invalid credentials"
             })
         }
+        // END - VALIDATE PASSWORD
 
+        // GENERATE TOKEN AND RESPONCE
         generateToken(user._id, res);
         res.status(200).json({
             _id : user._id,
@@ -91,6 +98,8 @@ export const login = async (req, res) => {
             email : user.email,
             profilePic : user.profilePic
         })
+        // END - GENERATE TOKEN AND RESPONCE
+
     } catch (error) {
         console.log("error in login", error.message);
         res.status(500).json({
@@ -100,6 +109,21 @@ export const login = async (req, res) => {
 };
 // END - LOGIN CONTROLLER
 
+// LOGOUT CONTROLLER
 export const logout = (req, res) => {
-    res.send("logout route")
+    try {
+        // CLEAR COOKIE
+        res.cookie("jwt", "", {
+            maxAge : 0
+        });
+        res.status(200).json({message : "logged out successfully"})
+        // END - CLEAR COOKIE
+
+    } catch (error) {
+        console.log("error in logout controller", error.message);
+        res.status(500).json({
+            message : "internal server error"
+        })
+    }
 }
+// END - LOGOUT CONTROLLER
