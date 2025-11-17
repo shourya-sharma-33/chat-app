@@ -2,6 +2,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt"
 import { generateToken } from "../lib/utils.js";
+import cloudinary from "../lib/cloudinary.js";
 // END - IMPORT
 
 // SIGNUP CONTROLLER
@@ -130,6 +131,43 @@ export const logout = (req, res) => {
 
 // UPDATE CONTROLLER
 export const updateProfile = async (req, res) => {
-    
+    try {
+        // DESTRUCIRE PIC URL AND USERID FROM REQ
+        const {profilePic} = req.body;
+        const userId = req.user._id;
+
+        if (!profilePic) {
+            return res.status(400).json({
+                message: "profile pic require"
+            })
+        }
+
+        // END -DESTRUCIRE PIC URL AND USERID FROM REQ
+
+        // UPLOAD PFP AND UPDATE USER
+        const uploadResponse = await cloudinary.uploader(profilePic);
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            {profilePic : uploadResponse.secure_url},
+            {new : true}
+        )
+        // END - UPLOAD PFP AND UPDATE USER
+
+        res.status(200).json(updatedUser);
+    } catch (error){
+        res.status(500).json({message : "internal server error"})
+    }
 }
 // END - UPDATE CONTROLLER
+
+// CHECK AUTH CONTROLLER
+export const checkAuth = (req, res) => {
+    try {
+        res.status(200).json(req.user);
+    } catch (error) {
+        res.status(500).json({
+            message: "internal server errro"
+        })
+    }
+}
+// END - CHECK AUTH CONTROLLER
