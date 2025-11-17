@@ -21,7 +21,14 @@ export const signup = async (req, res) => {
             generateToken(newUser._id, res)
             await newUser.save();
         }    
-        return res.status(200).json(newUser);
+        return res.status(200).json(
+            {
+                _id : newUser._id,
+                fullName : newUser.fullName,
+                email : newUser.email,
+                profilePic : newUser.profilePic
+            }
+        );
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: "Server error" });
