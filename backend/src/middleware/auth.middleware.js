@@ -1,6 +1,6 @@
 // IMPORTS
 import jwt, { decode } from "jsonwebtoken";
-import User  from "../models/user.model";
+import User from "../models/user.model";
 // END - IMPORTS
 
 // AUTHRIZATION
