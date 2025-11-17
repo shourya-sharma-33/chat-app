@@ -127,3 +127,9 @@ export const logout = (req, res) => {
     }
 }
 // END - LOGOUT CONTROLLER
+
+// UPDATE CONTROLLER
+export const updateProfile = async (req, res) => {
+    
+}
+// END - UPDATE CONTROLLER

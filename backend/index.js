@@ -3,6 +3,7 @@ import express from "express";
 import authRoutes from "./src/routes/auth.route.js";
 import dotenv from "dotenv";
 import { connectDB } from "./src/lib/db.js";
+import cookieParser from "cookie-parser";
 // END - IMPORT
 
 dotenv.config();
@@ -22,6 +23,7 @@ function main() {
 
     // MIDDLEWARE
     app.use(express.json());
+    app.use(cookieParser());
 
     // ROUTES
     app.use("/api/auth", authRoutes); // ADD leading slash

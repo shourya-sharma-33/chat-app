@@ -11,6 +11,7 @@ const router = express.Router();
 router.get("/signup", signup);
 router.get("/login", login);
 router.get("/logout",logout);
+router.put("/update-profile", protectRoute, updateProfile);
 // END - ROUTES
 
 export default router;
