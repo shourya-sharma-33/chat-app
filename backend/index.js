@@ -1,11 +1,16 @@
 // IMPORT
 import express from "express";
 import authRoutes from "./src/routes/auth.route.js";
+import dotenv from "dotenv";
+import { connectDB } from "./src/lib/db.js";
 // END - IMPORT
+
+dotenv.config();
 
 // SERVER RUN CALLBACK
 function appRunCallback() {
-    console.log(`Server Start on port 5000`);
+    connectDB();
+    console.log(`Server Start on port ${process.env.BACKEND_PORT}`);
 }
 // END - SERVER RUN CALLBACK
 
@@ -23,7 +28,7 @@ function main() {
     // END - ROUTES
 
     // LISTENING ON PORT
-    app.listen(5000, () => {
+    app.listen(process.env.BACKEND_PORT, () => {
         appRunCallback();
     });
     // END - LISTENING ON PORT
