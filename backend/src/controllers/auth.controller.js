@@ -145,7 +145,7 @@ export const updateProfile = async (req, res) => {
         // END -DESTRUCIRE PIC URL AND USERID FROM REQ
 
         // UPLOAD PFP AND UPDATE USER
-        const uploadResponse = await cloudinary.uploader(profilePic);
+        const uploadResponse = await cloudinary.uploader.upload(profilePic);
         const updatedUser = await User.findByIdAndUpdate(
             userId,
             {profilePic : uploadResponse.secure_url},
